@@ -4,27 +4,20 @@ import java.net.URI;
 class Handler implements URLHandler {
     // The one bit of state on the server: a number that will be manipulated by
     // various requests.
-    int num = 0;
-
+    int i=0;
+    String arr[]=new String[1000];;
     public String handleRequest(URI url) {
-        if (url.getPath().equals("/")) {
-            return String.format("Junzheng Guan's Number: %d", num);
-        } else if (url.getPath().equals("/increment")) {
-            num += 1;
-            return String.format("Number incremented!");
-        } else {
-            System.out.println("Path: " + url.getPath());
-            if (url.getPath().contains("/add")) {
+            if (url.getPath().contains("/add-message")) {
                 String[] parameters = url.getQuery().split("=");
-                if (parameters[0].equals("count")) {
-                    num += Integer.parseInt(parameters[1]);
-                    return String.format("Number increased by %s! It's now %d", parameters[1], num);
+                if (parameters[0].equals("s")) {
+                    arr[i] = parameters[1];
+                    i++;
+                    return String.join("\n", arr);
                 }
             }
             return "404 Not Found!";
         }
     }
-}
 
 class NumberServer {
     public static void main(String[] args) throws IOException {
